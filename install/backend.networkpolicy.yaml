@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      role: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          role: backend
+          role: frontend
+  egress:
+  - to:
+    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          role: backend
+          role: frontend
+  - to:
+    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          istio: pilot
+          istio: mixer
+

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+	<html class="sl-root decks export offline loaded">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Debugging Istio 101</title>
+
+
+		<link rel="stylesheet" type="text/css" href="lib/offline-v2.css">
+
+
+
+	</head>
+	<body class="reveal-viewport theme-font-opensans theme-color-white-blue">
+		<div class="reveal">
+			<div class="slides">
+				<section data-id="ff4646c70d418b17a9f63a53d5e4e772">
+<div class="sl-block" data-block-type="image" style="min-width: 4px; min-height: 4px; width: 147px; height: 147px; left: 985px; top: 213px;" data-block-id="1412bfd438d7c76f21f54a30f4d5c357">
+    <div class="sl-block-content" style="z-index: 10;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 760px; left: 360px; top: 417px;" data-block-id="985089daddffd73318e682eee2098bc8"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; color: rgb(68, 68, 68); text-align: right;">
+<h1>Debugging Istio 101</h1>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 240px; left: 880px; top: 504px;" data-block-id="4c5cf12a398ab083432d475bf2571de4"><div class="sl-block-style" style="z-index: 13; opacity: 0.9;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; color: rgb(68, 68, 68); text-align: right;">
+<h3>Liam White</h3>
+</div></div></div>
+</section><section data-id="f8418312d4407ca65341515f8ba0b878">
+<div class="sl-block" data-block-type="image" style="width: 51px; height: 51px; left: 29px; top: 649px; min-width: 4px; min-height: 4px;" data-block-id="16a7dbb7680dc846046bb951a72c852a">
+    <div class="sl-block-content" style="z-index: 10;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 181px; left: 80px; top: 668px;" data-block-id="b34764702b41918187c790a112b49807"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; color: rgb(68, 68, 68); text-align: right; font-size: 65%;">
+<p><span style="font-size:1.0em">@liamandrewwhite</span></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 288px; height: 288px; left: 507px; top: 188px; min-width: 4px; min-height: 4px;" data-block-id="f6880a5a0878a439e6053cc6c9952193">
+    <div class="sl-block-content" style="z-index: 12;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+<div class="sl-block" data-block-type="image" style="min-width: 4px; min-height: 4px; width: 183px; height: 178px; left: 879px; top: 275px;" data-block-id="9d02b5b407325d287efa55820bb00bef"><div class="sl-block-content fragment semi-fade-out" style="z-index: 13;" data-inline-svg="false" data-fragment-index="0"><img style="" data-natural-width="723" data-natural-height="702" data-lazy-loaded="" data-src="debugging-istio-101/197f2fcc1738860f7ffc2651b5443a26.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="min-width: 4px; min-height: 4px; width: 237px; height: 178px; left: 191px; top: 285px;" data-block-id="5bd3f1ce9c4eca9befa6bd3901e8ebb5"><div class="sl-block-content" style="z-index: 14;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 453px; top: 374px;" data-block-id="fe8a9eaf325ea4541db1b5c0277b72ce"><div class="sl-block-content" data-line-x1="0" data-line-y1="200" data-line-x2="87" data-line-y2="200" data-line-color="#444444" data-line-start-type="line-arrow" data-line-end-type="line-arrow" style="z-index: 15;" data-line-width="8px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="87" height="1" viewbox="0 200 87 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="6" y1="200" x2="81" y2="200"></line><line stroke="#444444" stroke-width="8" x1="6" y1="200" x2="81" y2="200"></line><path style="fill: rgba(0,0,0,0);" stroke="#444444" stroke-width="8" transform="translate(6,200) rotate(90)" d="M -18 -18 L 0 0 L 18 -18"></path><path style="fill: rgba(0,0,0,0);" stroke="#444444" stroke-width="8" transform="translate(81,200) rotate(90)" d="M 18 18 L 0 0 L -18 18"></path></svg></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 767px; top: 373px;" data-block-id="1eacfda8de8094dc79be56ad49155217"><div class="sl-block-content fragment semi-fade-out" data-line-x1="0" data-line-y1="200" data-line-x2="87" data-line-y2="200" data-line-color="#444444" data-line-start-type="line-arrow" data-line-end-type="line-arrow" style="z-index: 17;" data-line-width="8px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="87" height="1" viewbox="0 200 87 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="6" y1="200" x2="81" y2="200"></line><line stroke="#444444" stroke-width="8" x1="6" y1="200" x2="81" y2="200"></line><path style="fill: rgba(0,0,0,0);" stroke="#444444" stroke-width="8" transform="translate(6,200) rotate(90)" d="M -18 -18 L 0 0 L 18 -18"></path><path style="fill: rgba(0,0,0,0);" stroke="#444444" stroke-width="8" transform="translate(81,200) rotate(90)" d="M 18 18 L 0 0 L -18 18"></path></svg></div></div></section><section class="stack" data-id="d8f05ad8bf77f9937b82f5ceef943772"><section data-id="02399c8abff4d394d28768c89a15d23c" data-background-image="debugging-istio-101/eae56ac6113cb55d8b96befee958567e.gif"></section><section data-id="eb95a6ac79e7dbaddef524ed9e17ce25">
+<div class="sl-block" data-block-type="image" style="width: 51px; height: 51px; left: 29px; top: 649px; min-width: 4px; min-height: 4px;" data-block-id="2362a48d6863b819c4dcda870ece4997">
+    <div class="sl-block-content" style="z-index: 11;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 181px; left: 80px; top: 668px;" data-block-id="98e6d3e01ee19283b99106b20d40f37e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; color: rgb(68, 68, 68); text-align: right; font-size: 65%;">
+<p><span style="font-size:1.0em">@liamandrewwhite</span></p>
+</div></div>
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 1120px; left: 80px; top: 216px;" data-block-id="1985d12d50885960934b2974b16cfed2"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; color: rgb(68, 68, 68); text-align: center; font-size: 365%;">
+<p><strong>Static</strong> vs <strong>Dynamic</strong> Configuration</p>
+</div></div></section><section data-id="ef4e90fe135b585246638767432aeecf">
+<div class="sl-block" data-block-type="image" style="width: 51px; height: 51px; left: 29px; top: 649px; min-width: 4px; min-height: 4px;" data-block-id="e27e01835ed609d67f6601710941b0ad">
+    <div class="sl-block-content" style="z-index: 10;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 181px; left: 80px; top: 668px;" data-block-id="1d680e800a39788ebfbb2b17d24ee914"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; color: rgb(68, 68, 68); text-align: right; font-size: 65%;">
+<p><span style="font-size:1.0em">@liamandrewwhite</span></p>
+</div></div>
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 149px; left: 259px; top: 426px; min-width: 4px; min-height: 4px;" data-block-id="65dc145fff97e414d627c85dd9c1cfba"><div class="sl-block-content" style="z-index: 12;" data-inline-svg="true">
+<img style="" data-natural-width="123" data-natural-height="149" data-lazy-loaded="" data-src="debugging-istio-101/fec5fc5a06214ec9d35113851bf5879f.svg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="123" height="149" version="1.1" viewbox="0 0 123 149" preserveaspectratio="xMidYMid meet"><defs></defs><g transform="translate(0.5,0.5)"><rect x="1" y="7" width="120" height="140" rx="18" ry="18" fill="none" stroke="#4d4d4d" stroke-width="3" stroke-dasharray="9 9" pointer-events="none"></rect><rect x="13" y="94" width="96" height="40" rx="6" ry="6" fill="none" stroke="#043c97" stroke-width="3" pointer-events="none"></rect><rect x="13" y="17" width="96" height="40" rx="6" ry="6" fill="none" stroke="#6332a7" stroke-width="3" pointer-events="none"></rect><path d="M 61 7 L 61 7" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path><path d="M 61 7 L 61 7 L 61 7 L 61 7 Z" fill="#ffffff" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path></g></svg>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 149px; left: 419px; top: 426px; min-width: 4px; min-height: 4px;" data-block-id="6797ad26c05e896e4aab8963f97eb7cf"><div class="sl-block-content" style="z-index: 13;" data-inline-svg="true">
+<img style="" data-natural-width="123" data-natural-height="149" data-lazy-loaded="" data-src="debugging-istio-101/fec5fc5a06214ec9d35113851bf5879f.svg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="123" height="149" version="1.1" viewbox="0 0 123 149" preserveaspectratio="xMidYMid meet"><defs></defs><g transform="translate(0.5,0.5)"><rect x="1" y="7" width="120" height="140" rx="18" ry="18" fill="none" stroke="#4d4d4d" stroke-width="3" stroke-dasharray="9 9" pointer-events="none"></rect><rect x="13" y="94" width="96" height="40" rx="6" ry="6" fill="none" stroke="#043c97" stroke-width="3" pointer-events="none"></rect><rect x="13" y="17" width="96" height="40" rx="6" ry="6" fill="none" stroke="#6332a7" stroke-width="3" pointer-events="none"></rect><path d="M 61 7 L 61 7" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path><path d="M 61 7 L 61 7 L 61 7 L 61 7 Z" fill="#ffffff" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path></g></svg>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 149px; left: 579px; top: 426px; min-width: 4px; min-height: 4px;" data-block-id="b4e41777d78ba1555ae9c798077163a1"><div class="sl-block-content" style="z-index: 14;" data-inline-svg="true">
+<img style="" data-natural-width="123" data-natural-height="149" data-lazy-loaded="" data-src="debugging-istio-101/fec5fc5a06214ec9d35113851bf5879f.svg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="123" height="149" version="1.1" viewbox="0 0 123 149" preserveaspectratio="xMidYMid meet"><defs></defs><g transform="translate(0.5,0.5)"><rect x="1" y="7" width="120" height="140" rx="18" ry="18" fill="none" stroke="#4d4d4d" stroke-width="3" stroke-dasharray="9 9" pointer-events="none"></rect><rect x="13" y="94" width="96" height="40" rx="6" ry="6" fill="none" stroke="#043c97" stroke-width="3" pointer-events="none"></rect><rect x="13" y="17" width="96" height="40" rx="6" ry="6" fill="none" stroke="#6332a7" stroke-width="3" pointer-events="none"></rect><path d="M 61 7 L 61 7" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path><path d="M 61 7 L 61 7 L 61 7 L 61 7 Z" fill="#ffffff" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path></g></svg>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 149px; left: 739px; top: 426px; min-width: 4px; min-height: 4px;" data-block-id="28c196cf6268e28241167e2e9195de8d"><div class="sl-block-content" style="z-index: 15;" data-inline-svg="true">
+<img style="" data-natural-width="123" data-natural-height="149" data-lazy-loaded="" data-src="debugging-istio-101/fec5fc5a06214ec9d35113851bf5879f.svg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="123" height="149" version="1.1" viewbox="0 0 123 149" preserveaspectratio="xMidYMid meet"><defs></defs><g transform="translate(0.5,0.5)"><rect x="1" y="7" width="120" height="140" rx="18" ry="18" fill="none" stroke="#4d4d4d" stroke-width="3" stroke-dasharray="9 9" pointer-events="none"></rect><rect x="13" y="94" width="96" height="40" rx="6" ry="6" fill="none" stroke="#043c97" stroke-width="3" pointer-events="none"></rect><rect x="13" y="17" width="96" height="40" rx="6" ry="6" fill="none" stroke="#6332a7" stroke-width="3" pointer-events="none"></rect><path d="M 61 7 L 61 7" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path><path d="M 61 7 L 61 7 L 61 7 L 61 7 Z" fill="#ffffff" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path></g></svg>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 149px; left: 899px; top: 426px; min-width: 4px; min-height: 4px;" data-block-id="bb82bb12cc0492e2f47b02dbf2c62695"><div class="sl-block-content" style="z-index: 16;" data-inline-svg="true">
+<img style="" data-natural-width="123" data-natural-height="149" data-lazy-loaded="" data-src="debugging-istio-101/fec5fc5a06214ec9d35113851bf5879f.svg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="123" height="149" version="1.1" viewbox="0 0 123 149" preserveaspectratio="xMidYMid meet"><defs></defs><g transform="translate(0.5,0.5)"><rect x="1" y="7" width="120" height="140" rx="18" ry="18" fill="none" stroke="#4d4d4d" stroke-width="3" stroke-dasharray="9 9" pointer-events="none"></rect><rect x="13" y="94" width="96" height="40" rx="6" ry="6" fill="none" stroke="#043c97" stroke-width="3" pointer-events="none"></rect><rect x="13" y="17" width="96" height="40" rx="6" ry="6" fill="none" stroke="#6332a7" stroke-width="3" pointer-events="none"></rect><path d="M 61 7 L 61 7" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path><path d="M 61 7 L 61 7 L 61 7 L 61 7 Z" fill="#ffffff" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"></path></g></svg>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 143px; left: 419px; top: 139px; min-width: 4px; min-height: 4px;" data-block-id="966f74dcdeda523fc73798acc64fc140"><div class="sl-block-style" style="z-index: 17; transform: rotate(270deg);"><div class="sl-block-content" style="z-index: 17;" data-inline-svg="false"><img style="" data-natural-width="123" data-natural-height="143" data-lazy-loaded="" data-src="debugging-istio-101/85cc7975e8f0529ca885c07bd3cd3c05.svg"></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 104px; left: 430px; top: 191px;" data-block-id="a3de7586e469dd4dc54bd38e03ada85b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>PILOT</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 143px; left: 579px; top: 139px; min-width: 4px; min-height: 4px;" data-block-id="0f374c24db6fcbc49a2459f24aaeda47"><div class="sl-block-style" style="z-index: 19; transform: rotate(270deg);"><div class="sl-block-content" style="z-index: 19;" data-inline-svg="false"><img style="" data-natural-width="123" data-natural-height="143" data-lazy-loaded="" data-src="debugging-istio-101/85cc7975e8f0529ca885c07bd3cd3c05.svg"></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 143px; left: 739px; top: 138px; min-width: 4px; min-height: 4px;" data-block-id="ba1bc163e9eefb9ff03c038bbf7b6e87"><div class="sl-block-style" style="z-index: 20; transform: rotate(270deg);"><div class="sl-block-content" style="z-index: 20;" data-inline-svg="false"><img style="" data-natural-width="123" data-natural-height="143" data-lazy-loaded="" data-src="debugging-istio-101/85cc7975e8f0529ca885c07bd3cd3c05.svg"></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 104px; left: 590px; top: 190px;" data-block-id="b6535d5b8b978afc996016d2d9e48f71"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 21; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>PILOT</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 104px; left: 750px; top: 191px;" data-block-id="34de07999714c4254d5c0b9ba89b6052"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 22; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>PILOT</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 41px; height: 31px; left: 300px; top: 446px; min-width: 4px; min-height: 4px;" data-block-id="35c9eaf15151adcf3007ded0a8849a1c"><div class="sl-block-content" style="z-index: 23;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 41px; height: 31px; left: 461px; top: 446px; min-width: 4px; min-height: 4px;" data-block-id="0a471d257e270fe125a9fd4065bc3334"><div class="sl-block-content" style="z-index: 24;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 41px; height: 31px; left: 621px; top: 446px; min-width: 4px; min-height: 4px;" data-block-id="e70a1727430fcdff93d4e116132e2f50"><div class="sl-block-content" style="z-index: 25;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 41px; height: 31px; left: 781px; top: 446px; min-width: 4px; min-height: 4px;" data-block-id="32f9fa26341e3e2891d9a5613c216617"><div class="sl-block-content" style="z-index: 26;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 41px; height: 31px; left: 940px; top: 449px; min-width: 4px; min-height: 4px;" data-block-id="fa48c40455be5777a25764206ba81cc1"><div class="sl-block-content" style="z-index: 27;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 160px; top: 354px;" data-block-id="bab94061cee7a64214dd63a52912747a"><div class="sl-block-content" data-line-x1="-380" data-line-y1="28" data-line-x2="580" data-line-y2="28" data-line-color="#444444" data-line-start-type="none" data-line-end-type="none" style="z-index: 28;" data-line-width="5px" data-line-style="dotted"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="960" height="1" viewbox="-380 28 960 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="-379.5" y1="28.5" x2="580.5" y2="28.5"></line><line stroke="#444444" stroke-width="5" stroke-dasharray="0 10" stroke-linecap="round" x1="-379.5" y1="28.5" x2="580.5" y2="28.5"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 340px; top: 601px;" data-block-id="88ecebec52b7b894b894212ced6d1cc7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 29; color: rgb(68, 68, 68);">
+<p><strong>Data Plane</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 340px; top: 81px;" data-block-id="9fd9ba4b1d7d0744701d4b199f867c5f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 30; color: rgb(68, 68, 68);">
+<p><strong>Control Plane</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 100px; left: 270px; top: 518px;" data-block-id="501b5282ca8d764f85ec0fd0e80abf6e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 31; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>APP</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 100px; left: 431px; top: 518px;" data-block-id="0c6bbc91b223c001540a712497e64a9b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 32; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>APP</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 100px; left: 590px; top: 518px;" data-block-id="3380b9676e11e3c0bc816f18db7cda5a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 33; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>APP</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 100px; left: 750px; top: 518px;" data-block-id="23f54df9053dfee6892f712b67f5121e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 34; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>APP</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 100px; left: 911px; top: 518px;" data-block-id="4a31809fc9fdee673f04c0163d0a1f1c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 35; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>APP</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 321px; top: 259px;" data-block-id="d4abc020f223a6ed89f0f32938c81947"><div class="sl-block-content fragment" data-line-x1="39" data-line-y1="179" data-line-x2="200" data-line-y2="-5" data-line-color="#444444" data-line-start-type="arrow" data-line-end-type="arrow" style="z-index: 36;" data-line-width="4px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="161" height="184" viewbox="39 -5 161 184"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="43" y1="174" x2="196" y2="-1"></line><line stroke="#444444" stroke-width="4" x1="43" y1="174" x2="196" y2="-1"></line><polygon fill="#444444" transform="translate(43,174) rotate(41.186)" points="0,6 6,-6 -6,-6"></polygon><polygon fill="#444444" transform="translate(196,-1) rotate(41.186)" points="0,-6 6,6 -6,6"></polygon></svg></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 801px; top: 259px;" data-block-id="42f0dcd76e762e43944b8390445643f7"><div class="sl-block-content fragment" data-line-x1="39" data-line-y1="179" data-line-x2="-121" data-line-y2="-5" data-line-color="#444444" data-line-start-type="arrow" data-line-end-type="arrow" style="z-index: 37;" data-line-width="4px" data-line-style="solid" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="160" height="184" viewbox="-121 -5 160 184"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="35" y1="174" x2="-117" y2="-1"></line><line stroke="#444444" stroke-width="4" x1="35" y1="174" x2="-117" y2="-1"></line><polygon fill="#444444" transform="translate(35,174) rotate(-41.009)" points="0,6 6,-6 -6,-6"></polygon><polygon fill="#444444" transform="translate(-117,-1) rotate(-41.009)" points="0,-6 6,6 -6,6"></polygon></svg></div></div>
+
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 642px; top: 259px;" data-block-id="fe292b152a09124c5c1bf796689a3c7b"><div class="sl-block-content fragment" data-line-x1="200" data-line-y1="179" data-line-x2="200" data-line-y2="-5" data-line-color="#444444" data-line-start-type="arrow" data-line-end-type="arrow" style="z-index: 38;" data-line-width="4px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="184" viewbox="200 -5 1 184"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="200" y1="173" x2="200" y2="1"></line><line stroke="#444444" stroke-width="4" x1="200" y1="173" x2="200" y2="1"></line><polygon fill="#444444" transform="translate(200,173) rotate(0)" points="0,6 6,-6 -6,-6"></polygon><polygon fill="#444444" transform="translate(200,1) rotate(0)" points="0,-6 6,6 -6,6"></polygon></svg></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 802px; top: 259px;" data-block-id="a92df74b0652451293cc8f7262d05744"><div class="sl-block-content fragment" data-line-x1="200" data-line-y1="179" data-line-x2="200" data-line-y2="-5" data-line-color="#444444" data-line-start-type="arrow" data-line-end-type="arrow" style="z-index: 40;" data-line-width="4px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="184" viewbox="200 -5 1 184"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="200" y1="173" x2="200" y2="1"></line><line stroke="#444444" stroke-width="4" x1="200" y1="173" x2="200" y2="1"></line><polygon fill="#444444" transform="translate(200,173) rotate(0)" points="0,6 6,-6 -6,-6"></polygon><polygon fill="#444444" transform="translate(200,1) rotate(0)" points="0,-6 6,6 -6,6"></polygon></svg></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 482px; top: 259px;" data-block-id="ff947d22ef0cb13c69db6958cf16948e"><div class="sl-block-content fragment" data-line-x1="200" data-line-y1="179" data-line-x2="200" data-line-y2="-5" data-line-color="#444444" data-line-start-type="arrow" data-line-end-type="arrow" style="z-index: 41;" data-line-width="4px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="184" viewbox="200 -5 1 184"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="200" y1="173" x2="200" y2="1"></line><line stroke="#444444" stroke-width="4" x1="200" y1="173" x2="200" y2="1"></line><polygon fill="#444444" transform="translate(200,173) rotate(0)" points="0,6 6,-6 -6,-6"></polygon><polygon fill="#444444" transform="translate(200,1) rotate(0)" points="0,-6 6,6 -6,6"></polygon></svg></div></div></section><section data-id="e9db62087b518461f3c0398dcd6bebaf">
+<div class="sl-block" data-block-type="image" style="width: 51px; height: 51px; left: 29px; top: 649px; min-width: 4px; min-height: 4px;" data-block-id="7833d44edd29eb0c787cfd3b04deb6d2">
+    <div class="sl-block-content" style="z-index: 11;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 181px; left: 80px; top: 668px;" data-block-id="9eb5a2e67974ef8bccceb88bf5e39664"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; color: rgb(68, 68, 68); text-align: right; font-size: 65%;">
+<p><span style="font-size:1.0em">@liamandrewwhite</span></p>
+</div></div>
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 123px; height: 143px; left: 899px; top: 72px; min-width: 4px; min-height: 4px;" data-block-id="c9f376b26582e6ccb1d39985a7d7a085"><div class="sl-block-style" style="z-index: 13;"><div class="sl-block-content" style="z-index: 13;" data-inline-svg="false"><img style="" data-natural-width="123" data-natural-height="143" data-lazy-loaded="" data-src="debugging-istio-101/85cc7975e8f0529ca885c07bd3cd3c05.svg"></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 104px; left: 909px; top: 124px;" data-block-id="4e812aa721f275acae6ababd2f6d4e30"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; color: rgb(43, 70, 127);">
+<p><span style="font-size:0.7em"><strong>PILOT</strong></span></p>
+</div></div>
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 71px; height: 53px; left: 285px; top: 115px; min-width: 4px; min-height: 4px;" data-block-id="e3a7cc10c1ff53117be42f0657c42a66"><div class="sl-block-content" style="z-index: 15;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 960px; top: 202px;" data-block-id="293c57c6ba5f846193b02bf091266827"><div class="sl-block-content" data-line-x1="-318" data-line-y1="393" data-line-x2="-319" data-line-y2="-53" data-line-color="#444444" data-line-start-type="none" data-line-end-type="none" style="z-index: 16;" data-line-width="3px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="446" viewbox="-319 -53 1 446"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="-317.5" y1="393.5" x2="-318.5" y2="-52.5"></line><line stroke="#444444" stroke-width="3" x1="-317.5" y1="393.5" x2="-318.5" y2="-52.5"></line></svg></div></div>
+<div class="sl-block" data-block-type="image" style="min-width: 4px; min-height: 4px; width: 123px; height: 149px; left: 259px; top: 67px;" data-block-id="db34fd383dd4b5633f1202502b7b455d"><div class="sl-block-content" style="z-index: 10;" data-inline-svg="false"><img style="" data-natural-width="123" data-natural-height="149" data-lazy-loaded="" data-src="debugging-istio-101/3057f971edc8270bf4efbd293238793c.svg"></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 319px; top: 202px;" data-block-id="2617c1b8529bd4afa3c5df7c65db524a"><div class="sl-block-content" data-line-x1="-319" data-line-y1="393" data-line-x2="-319" data-line-y2="-53" data-line-color="#444444" data-line-start-type="none" data-line-end-type="none" style="z-index: 17;" data-line-width="3px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="446" viewbox="-319 -53 1 446"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="-318.5" y1="393.5" x2="-318.5" y2="-52.5"></line><line stroke="#444444" stroke-width="3" x1="-318.5" y1="393.5" x2="-318.5" y2="-52.5"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 340px; top: 123px;" data-block-id="18c54f4a7e06d45ae0971b01d0cdb84d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18; color: rgb(68, 68, 68);">
+<p><strong>ADS</strong></p>
+</div></div>
+
+
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 321px; top: 358px;" data-block-id="94493d1fb064f02ca57a489fa58ac0d7"><div class="sl-block-content fragment" data-line-x1="-219" data-line-y1="-14" data-line-x2="420" data-line-y2="-14" data-line-color="#000000" data-line-start-type="arrow" data-line-end-type="none" style="z-index: 21;" data-line-width="3px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="639" height="1" viewbox="-219 -14 639 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="-213.5" y1="-13.5" x2="420.5" y2="-13.5"></line><line stroke="#000000" stroke-width="3" x1="-213.5" y1="-13.5" x2="420.5" y2="-13.5"></line><polygon fill="#000000" transform="translate(-214,-14) rotate(90)" points="0,4.5 4.5,-4.5 -4.5,-4.5"></polygon></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 640px; left: 320px; top: 328px;" data-block-id="acccfd636d5a49bcb1d6b859ac20cc6e"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 22; font-size: 73%;" data-fragment-index="0">
+<p>Stuff has changed! (v=x, nonce=22)</p>
+</div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 321px; top: 430px;" data-block-id="e8e403ffb72e6ec150a8a8dec37eac50"><div class="sl-block-content fragment" data-line-x1="-219" data-line-y1="-14" data-line-x2="420" data-line-y2="-14" data-line-color="#6aa84f" data-line-start-type="none" data-line-end-type="arrow" style="z-index: 23;" data-line-width="3px" data-fragment-index="1"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="639" height="1" viewbox="-219 -14 639 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="-218.5" y1="-13.5" x2="416.5" y2="-13.5"></line><line stroke="#6aa84f" stroke-width="3" x1="-218.5" y1="-13.5" x2="416.5" y2="-13.5"></line><polygon fill="#6aa84f" transform="translate(416,-14) rotate(90)" points="0,-4.5 4.5,4.5 -4.5,4.5"></polygon></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 639px; left: 320px; top: 400px;" data-block-id="250c8afc3aa847dc0367c2baf767817d"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 25; font-size: 73%; color: rgb(106, 168, 79);" data-fragment-index="1">
+<p>Thanks, acknowledging. (v=x,nonce=22)</p>
+</div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 320px; top: 502px;" data-block-id="ad4adad8e8daaa8cdcdcba3c1f5a6112"><div class="sl-block-content fragment" data-line-x1="-219" data-line-y1="-14" data-line-x2="420" data-line-y2="-14" data-line-color="#000000" data-line-start-type="arrow" data-line-end-type="none" style="z-index: 27;" data-line-width="3px" data-fragment-index="2"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="639" height="1" viewbox="-219 -14 639 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="-213.5" y1="-13.5" x2="420.5" y2="-13.5"></line><line stroke="#000000" stroke-width="3" x1="-213.5" y1="-13.5" x2="420.5" y2="-13.5"></line><polygon fill="#000000" transform="translate(-214,-14) rotate(90)" points="0,4.5 4.5,-4.5 -4.5,-4.5"></polygon></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 640px; left: 319px; top: 472px;" data-block-id="e0f1d8d03835614db6a1afc1b99c5ace"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 28; font-size: 73%;" data-fragment-index="2" dir="ui">
+<p>Guess what? Changed again! (v=y, nonce=32)</p>
+</div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 1px; min-height: 1px; left: 320px; top: 576px;" data-block-id="deeda401bc2435e1575dadc9de4bd672"><div class="sl-block-content fragment" data-line-x1="-219" data-line-y1="-14" data-line-x2="420" data-line-y2="-14" data-line-color="#cc0000" data-line-start-type="none" data-line-end-type="arrow" style="z-index: 24;" data-line-width="3px" data-fragment-index="3"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="639" height="1" viewbox="-219 -14 639 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="-218.5" y1="-13.5" x2="416.5" y2="-13.5"></line><line stroke="#cc0000" stroke-width="3" x1="-218.5" y1="-13.5" x2="416.5" y2="-13.5"></line><polygon fill="#cc0000" transform="translate(416,-14) rotate(90)" points="0,-4.5 4.5,4.5 -4.5,4.5"></polygon></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 639px; left: 319px; top: 546px;" data-block-id="35e48887917013c492c9d96022cbec13"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 29; font-size: 73%; color: rgb(204, 0, 0);" data-fragment-index="3">
+<p>I'm sorry, what? (v=, nonce=32)</p>
+</div></div></section></section><section class="stack" data-id="c786647570deb06a6779d89601359e65"><section data-id="73b799ac8641f56bcfecf040d0538e45" data-background-image="debugging-istio-101/0045c5ee6659736f904093d0ef64e2ea.gif" data-background-position="50% 100%"></section><section data-id="9db88e981e5fe7e6c2950e345c93c02c">
+<div class="sl-block" data-block-type="image" style="width: 51px; height: 51px; left: 29px; top: 649px; min-width: 4px; min-height: 4px;" data-block-id="aa98f9591c63b0b30271938fba87c096">
+    <div class="sl-block-content" style="z-index: 10;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 181px; left: 80px; top: 668px;" data-block-id="57195846177777049109217bc87208ec"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; color: rgb(68, 68, 68); text-align: right; font-size: 65%;">
+<p><span style="font-size:1.0em">@liamandrewwhite</span></p>
+</div></div>
+
+
+<div class="sl-block" data-block-type="image" style="width: 126px; height: 95px; left: 97px; top: 96px; min-width: 4px; min-height: 4px;" data-block-id="c77b94b24b87e46cc6fd326ad1b77136"><div class="sl-block-content" style="z-index: 12;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 240px; left: 261px; top: 107px;" data-block-id="06e22fa50d85615e983d74c7b1be37fe"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; color: rgb(68, 68, 68); text-align: left;">
+<h2>Listener</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 960px; left: 160px; top: 360px;" data-block-id="3083470db06cd4c9837736825e1098b9"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; color: rgb(68, 68, 68);">
+<p><span style="color:rgb(64, 64, 64); text-align:start">A listener is a named network location (e.g., port, unix domain socket, etc.) that can be connected to by downstream clients. Envoy exposes one or more listeners that downstream hosts connect to.</span></p>
+</div></div></section><section data-id="2e66c7bb0f999aa62f65be9e4a3f20e9">
+<div class="sl-block" data-block-type="image" style="width: 51px; height: 51px; left: 29px; top: 649px; min-width: 4px; min-height: 4px;" data-block-id="2a27ad064c4f4cacdc64a5d09de1646c">
+    <div class="sl-block-content" style="z-index: 10;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 181px; left: 80px; top: 668px;" data-block-id="8228c1c91e07e1da0a43888f00fd3cc3"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; color: rgb(68, 68, 68); text-align: right; font-size: 65%;">
+<p><span style="font-size:1.0em">@liamandrewwhite</span></p>
+</div></div>
+
+
+<div class="sl-block" data-block-type="image" style="width: 126px; height: 95px; left: 97px; top: 96px; min-width: 4px; min-height: 4px;" data-block-id="74148580cecc39328eb1d4e7185f085c"><div class="sl-block-content" style="z-index: 12;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 240px; left: 261px; top: 107px;" data-block-id="6d53c60af40045a69f231a64df0495c3"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; color: rgb(68, 68, 68); text-align: left;">
+<h2>Route(r)</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 960px; left: 160px; top: 360px;" data-block-id="673dc0ed6c04379a07f6275ac782f014"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; color: rgb(68, 68, 68);">
+<p style="text-align:center"><span style="color:rgb(64, 64, 64); text-align:start">At a high level the router takes an incoming request, matches it to an upstream cluster, acquires a connection pool </span><span style="color:rgb(64, 64, 64); text-align:start">to a host in the upstream cluster, and forwards the request.</span></p>
+</div></div></section><section data-id="de19babb05c997aca4b80a46da74da9c">
+<div class="sl-block" data-block-type="image" style="width: 51px; height: 51px; left: 29px; top: 649px; min-width: 4px; min-height: 4px;" data-block-id="689533f51028970f503fcfc4ae744d83">
+    <div class="sl-block-content" style="z-index: 11;" data-inline-svg="true">
+        <img style="" data-natural-width="100" data-natural-height="100" data-lazy-loaded="" data-src="debugging-istio-101/946603f8dda0fc2fc2a6c461eaf23b6c.svg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1" viewbox="0 0 160 240" preserveaspectratio="xMidYMid meet">
+            <g id="logo" fill="#1661c1">
+                <polygon id="hull" points="0,210 160,210 60,240"></polygon>
+                <polygon id="mainsail" points="0,200 60,190 60,80"></polygon>
+                <polygon id="headsail" points="70,190 160,200 70,0"></polygon>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 181px; left: 80px; top: 668px;" data-block-id="0c13010bbb17624efc3fcd8312c951fc"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; color: rgb(68, 68, 68); text-align: right; font-size: 65%;">
+<p><span style="font-size:1.0em">@liamandrewwhite</span></p>
+</div></div>
+
+
+<div class="sl-block" data-block-type="image" style="width: 126px; height: 95px; left: 97px; top: 96px; min-width: 4px; min-height: 4px;" data-block-id="72d200de4e2aaecfec3232ad1a2f8cd0"><div class="sl-block-content" style="z-index: 13;" data-inline-svg="false"><img style="" data-natural-width="225" data-natural-height="169" data-lazy-loaded="" data-src="debugging-istio-101/7cea31d5541b6e39458dd972bd45bfef.svg"></div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 240px; left: 261px; top: 107px;" data-block-id="2c07152484cf1965fd92fccb26ff9501"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; color: rgb(68, 68, 68); text-align: left;">
+<h2>Cluster</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 960px; left: 160px; top: 360px;" data-block-id="bcdfdef40e08c4986f4dec814d20b252"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15; color: rgb(68, 68, 68);">
+<p><span style="font-size:1.0em"><span style="text-align:start">A cluster is a group of logically similar upstream hosts that Envoy connects to. Envoy discovers the members of a cluster via service discovery.</span></span></p>
+</div></div></section></section><section class="stack" data-id="bd1f2703cf3d3d8b4c515a87b96d5591"><section data-id="2a6e75dda9319b43962a00b39118f1a3" data-background-image="debugging-istio-101/84131d4acc8dcc7665f7b65517aa85fc.gif"></section><section data-id="50f2bc280a7ed33b1ffbec681aa362e5"><div class="sl-block" data-block-type="text" data-block-id="e28aa04ae3248a49658bafebe8997602" style="height: auto; min-width: 30px; min-height: 30px; width: 1120px; left: 80px; top: 194px;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; color: rgb(68, 68, 68); font-size: 150%;">
+<p><strong>groups.google.com/forum/#!forum/istio-users</strong></p>
+
+<p> </p>
+
+<p><strong>istio.rocket.chat</strong></p>
+
+<p> </p>
+
+<p><strong>github.com/istio/istio/issues/new</strong></p>
+</div></div></section></section><section data-id="4e306671ec6c57481305f1558e8f7470"><div class="sl-block" data-block-type="text" style="height: auto; width: 547px; left: 413px; top: 216px;" data-block-id="b6e6d53d62c229a59f5d4bda02ec473d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; color: rgb(68, 68, 68); text-align: right; font-size: 180%;">
+<p><strong><span style="font-size:1.0em">@liamandrewwhite</span></strong></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="min-width: 4px; min-height: 4px; width: 72px; height: 72px; left: 323px; top: 216px;" data-block-id="862a80e0050a43b5d782f888aa3e87c9"><div class="sl-block-content" style="z-index: 11;" data-inline-svg="false"><img style="" data-natural-width="512" data-natural-height="512" data-lazy-loaded="" data-src="debugging-istio-101/c96a5f4be9c008b1bc1ea3bf312b8b15.svg"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 640px; left: 320px; top: 484px;" data-block-id="f356290b74c919c317c949db352be6b3"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; color: rgb(68, 68, 68);">
+<p><strong>github.com/istio/istio/issues/new</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 1120px; left: 69px; top: 360px;" data-block-id="1630621cc05c07ed4628f3a076a6b919"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; color: rgb(68, 68, 68);">
+<p><strong><s>preliminary.</s>istio.io/help/ops/traffic-management/debugging-pilot-envoy</strong></p>
+</div></div></section>
+			</div>
+		</div>
+
+		<script>
+			var SLConfig = {"deck": {"id":1282125,"slug":"debugging-istio-101","title":"Debugging Istio 101","description":"","width":1280,"height":720,"visibility":"self","published_at":null,"sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/63a983555846ad4887521c09bff9a5a0/thumb.jpg?1529748293","view_count":0,"user":{"id":833063,"username":"liamawhite","name":"Liam White","description":"","thumbnail_url":"https://www.gravatar.com/avatar/b21ba0187a167d88cc6d3840a72df05a?s=140\u0026d=https%3A%2F%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","paid":true,"pro":false,"lite":true,"team_id":null,"settings":{"id":769573,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"opensans","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":false,"rolling_links":false,"center":false,"shuffle":false,"should_loop":false,"share_notes":false,"slide_number":false,"slide_count":16,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1531623797321,"font_typekit":null,"font_google":null,"notes":{"ff4646c70d418b17a9f63a53d5e4e772":"Personal Intro\n\nDebugging Istio not Debugging with Istio\n\nPre-start Checklist:\n- Full screen presentation\n- Desktop broken book info\n- Full Screen terminal in debugging-istio-101 dir","f8418312d4407ca65341515f8ba0b878":"Stuff I'm demoing is Kube only\n\nAlthough you could write your own using our libraries!\n\nCLICK\n\nFocus on networking (Pilot \u003c-\u003e Envoy)\nMinimum requirement for all a la carte option\n\nProxy-status (overview, diff)\nProxy-config (deep dive into Envoy)\n\nistioctl get is mostly self explanatory\nI'm going to teach you how to fish rather than give you the fish.\n\nPREMISE\n\nBookinfo is broken and we're going to fix it","eb95a6ac79e7dbaddef524ed9e17ce25":"Understand how Envoy receives its config\n\nStatic proxies have a config file loaded in (NGINX)\n\nDynamic proxies gets config from an API (Envoy)\n\nAlthough not designed for it static config can be used in ephemeral situations (Nginx ingress controllers)\n\nEnvoy designed to handle ephemeral config natively\n\nEnvoy technically uses both just most comes from dynamic\n\nThere are some trade offs to dynamic config, introduces more points of failure.\n\nConfig goes over the network. What if the network is broken?\n\n","1770aa44b8b4ff0863f99b595dcd67c8":"","ef4e90fe135b585246638767432aeecf":"Visualisation of what I was saying\n\nCLICK\n\nEnvoys open up GRPC stream with Pilot\n\nPotential for this connection to not start\n\nTRANSITION - Now for some debugging!\n\nstern productpage\nmake fixone.diff\nmake fixone\ni ps\n\nNOTICE STALE\n\nCHECK BOOKINFO","e9db62087b518461f3c0398dcd6bebaf":"Explain ADS\n\nPAUSE AFTER FIRST SENT - Explain slow network issues\n\nIf Envoy is rejecting things/stale this is most likely a bug in Istio\nReason this is stale is because I intentionally changed Pilot code that broke it\n\ni ps\nstern productpage\nmake fixtwo.diff\nmake fixtwo\n\nOther useful feature of proxy-status is the diff between Pilot and Envoy\n\ni ps\ni proxy-status productpage...\n\n\n","014d27f89c3c0d5fd61623f79e1b5eae":"","de19babb05c997aca4b80a46da74da9c":"i pc -n istio-system clusters istio-ingressgateway-7d6874b48f-qxhn5\ni pc -n istio-system clusters istio-ingressgateway-7d6874b48f-qxhn5 --fqdn productpage.default.svc.cluster.local -o json\n\nALL SEEMS FINE LETS TRY LOG IN","a8f6604a119bb956d0f58be447f85f4b":"\n\n","3498f2b198bc5c9d17baa7510707bbcb":"","02399c8abff4d394d28768c89a15d23c":"TAB TO BROKEN BOOKINFO\n\nStatus of all your proxies\nFirst port of call\n\ni ps\n\nIn order to fix the first issue we need some background!","73b799ac8641f56bcfecf040d0538e45":"Putting out fires, see where we are up to\n\nHopefully we have less of a fire now!\n\nTAB TO BOOKINFO -\u003e TRY TO LOGIN\n\nLets follow how Envoy routes a request to work out exactly whats wrong here","5b2b86659ef6012b93231dcaae7e8ce9":"","5e2d769b5edb058e3bb9bae26e52c4ef":"What happened here was proxy didn't know it needed to connect to pilot\n\nWhen we updated to correct version it was fine\n\nCould also happen with network policies!","2e66c7bb0f999aa62f65be9e4a3f20e9":"i pc -n istio-system r istio-ingressgateway-7d6874b48f-qxhn5 -o json\n\nmake fixthree.diff\nmake fixthree\n\nCONFIRM THAT ROUTES AND CLUSTERS ARE OK","9db88e981e5fe7e6c2950e345c93c02c":"k get po -n istio-system\ni pc -n istio-system listeners istio-ingressgateway-7d6874b48f-qxhn5 -n istio-system -o json","2617c2b5384d7a52726cd5e074ff2e89":"","2a6e75dda9319b43962a00b39118f1a3":"FIXED!\n","7811f2c61dff7ce654faf1dd67cfdfb6":"","668af67ea3efcd8b56cb13a1606707f4":"","59a3b402a001d5b80a77a7737ea09ce0":"","4e306671ec6c57481305f1558e8f7470":"\n\nAny suggestions on things that would improve the debugging experience.\n\n","cdbcac5472e24ef7ddb9ea2f98653558":"","50f2bc280a7ed33b1ffbec681aa362e5":"You're not on your own!\n\nTRANSITION\n\nMesh-Dump\nDashboard integration"}}};
+
+
+			// Use local fonts
+			SLConfig.fonts_url = 'lib/fonts/';
+		</script>
+
+		<script src="lib/head.min.js"></script>
+		<script src="lib/reveal.min.js"></script>
+		<script src="lib/offline.js"></script>
+
+		<!-- Initialize the presentation -->
+		<script>
+			Reveal.initialize({
+				width: 1280,
+				height: 720,
+				margin: 0.05,
+
+				controls: true,
+				progress: true,
+				history: true,
+				mouseWheel: false,
+				showNotes: false,
+				slideNumber: false,
+
+				autoSlide: 0 || 0,
+				autoSlideStoppable: true,
+
+				center: false,
+				shuffle: false,
+				loop: false,
+				rtl: false,
+
+				transition: "slide",
+				backgroundTransition: "slide",
+
+				dependencies: [
+					{ src: 'lib/reveal-plugins/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-plugins/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-plugins/highlight/highlight.js', async: true, callback: function() { hljs.initHighlighting(); hljs.initHighlightingOnLoad(); } },
+					{ src: 'lib/reveal-plugins/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+		</script>
+
+		
+
+	</body>
+</html>
