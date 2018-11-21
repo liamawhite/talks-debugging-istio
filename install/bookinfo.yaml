@@ -31,125 +31,22 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: details-v1
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/status: '{"version":"47f2e1a836d303da58ef4709268026d9a03df08a34294c5fdfdff030c5d34984","initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}'
-      creationTimestamp: null
       labels:
-        app: details
         role: backend
+        app: details
         version: v1
     spec:
       containers:
-      - image: istio/examples-bookinfo-details-v1:1.5.0
+      - name: details
+        image: istio/examples-bookinfo-details-v1:1.9.0
         imagePullPolicy: IfNotPresent
-        name: details
         ports:
         - containerPort: 9080
-        resources: {}
-      - args:
-        - proxy
-        - sidecar
-        - --configPath
-        - /etc/istio/proxy
-        - --binaryPath
-        - /usr/local/bin/envoy
-        - --serviceCluster
-        - details
-        - --drainDuration
-        - 45s
-        - --parentShutdownDuration
-        - 1m0s
-        - --discoveryAddress
-        - istio-pilot.istio-system:15007
-        - --discoveryRefreshDelay
-        - 10s
-        - --zipkinAddress
-        - zipkin.istio-system:9411
-        - --connectTimeout
-        - 10s
-        - --statsdUdpAddress
-        - istio-statsd-prom-bridge.istio-system:9125
-        - --proxyAdminPort
-        - "15000"
-        - --controlPlaneAuthPolicy
-        - NONE
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: INSTANCE_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: ISTIO_META_POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: ISTIO_META_INTERCEPTION_MODE
-          value: REDIRECT
-        image: liamwhite/proxy:oscon
-        imagePullPolicy: Always
-        name: istio-proxy
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-        securityContext:
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsUser: 1337
-        volumeMounts:
-        - mountPath: /etc/istio/proxy
-          name: istio-envoy
-        - mountPath: /etc/certs/
-          name: istio-certs
-          readOnly: true
-      initContainers:
-      - args:
-        - -p
-        - "15001"
-        - -u
-        - "1337"
-        - -m
-        - REDIRECT
-        - -i
-        - '*'
-        - -x
-        - ""
-        - -b
-        - 9080,
-        - -d
-        - ""
-        image: liamwhite/proxy_init:oscon
-        imagePullPolicy: Always
-        name: istio-init
-        resources: {}
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-          privileged: true
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: istio-envoy
-      - name: istio-certs
-        secret:
-          optional: true
-          secretName: istio.default
-status: {}
 ---
 ##################################################################################################
 # Ratings service
@@ -170,125 +67,22 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: ratings-v1
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/status: '{"version":"47f2e1a836d303da58ef4709268026d9a03df08a34294c5fdfdff030c5d34984","initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}'
-      creationTimestamp: null
       labels:
-        app: ratings
         role: backend
+        app: ratings
         version: v1
     spec:
       containers:
-      - image: istio/examples-bookinfo-ratings-v1:1.5.0
+      - name: ratings
+        image: istio/examples-bookinfo-ratings-v1:1.9.0
         imagePullPolicy: IfNotPresent
-        name: ratings
         ports:
         - containerPort: 9080
-        resources: {}
-      - args:
-        - proxy
-        - sidecar
-        - --configPath
-        - /etc/istio/proxy
-        - --binaryPath
-        - /usr/local/bin/envoy
-        - --serviceCluster
-        - ratings
-        - --drainDuration
-        - 45s
-        - --parentShutdownDuration
-        - 1m0s
-        - --discoveryAddress
-        - istio-pilot.istio-system:15007
-        - --discoveryRefreshDelay
-        - 10s
-        - --zipkinAddress
-        - zipkin.istio-system:9411
-        - --connectTimeout
-        - 10s
-        - --statsdUdpAddress
-        - istio-statsd-prom-bridge.istio-system:9125
-        - --proxyAdminPort
-        - "15000"
-        - --controlPlaneAuthPolicy
-        - NONE
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: INSTANCE_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: ISTIO_META_POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: ISTIO_META_INTERCEPTION_MODE
-          value: REDIRECT
-        image: liamwhite/proxy:oscon
-        imagePullPolicy: Always
-        name: istio-proxy
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-        securityContext:
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsUser: 1337
-        volumeMounts:
-        - mountPath: /etc/istio/proxy
-          name: istio-envoy
-        - mountPath: /etc/certs/
-          name: istio-certs
-          readOnly: true
-      initContainers:
-      - args:
-        - -p
-        - "15001"
-        - -u
-        - "1337"
-        - -m
-        - REDIRECT
-        - -i
-        - '*'
-        - -x
-        - ""
-        - -b
-        - 9080,
-        - -d
-        - ""
-        image: liamwhite/proxy_init:oscon
-        imagePullPolicy: Always
-        name: istio-init
-        resources: {}
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-          privileged: true
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: istio-envoy
-      - name: istio-certs
-        secret:
-          optional: true
-          secretName: istio.default
-status: {}
 ---
 ##################################################################################################
 # Reviews service
@@ -309,374 +103,65 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: reviews-v1
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/status: '{"version":"47f2e1a836d303da58ef4709268026d9a03df08a34294c5fdfdff030c5d34984","initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}'
-      creationTimestamp: null
       labels:
-        app: reviews
         role: backend
+        app: reviews
         version: v1
     spec:
       containers:
-      - image: istio/examples-bookinfo-reviews-v1:1.5.0
+      - name: reviews
+        image: istio/examples-bookinfo-reviews-v1:1.9.0
         imagePullPolicy: IfNotPresent
-        name: reviews
         ports:
         - containerPort: 9080
-        resources: {}
-      - args:
-        - proxy
-        - sidecar
-        - --configPath
-        - /etc/istio/proxy
-        - --binaryPath
-        - /usr/local/bin/envoy
-        - --serviceCluster
-        - reviews
-        - --drainDuration
-        - 45s
-        - --parentShutdownDuration
-        - 1m0s
-        - --discoveryAddress
-        - istio-pilot.istio-system:15007
-        - --discoveryRefreshDelay
-        - 10s
-        - --zipkinAddress
-        - zipkin.istio-system:9411
-        - --connectTimeout
-        - 10s
-        - --statsdUdpAddress
-        - istio-statsd-prom-bridge.istio-system:9125
-        - --proxyAdminPort
-        - "15000"
-        - --controlPlaneAuthPolicy
-        - NONE
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: INSTANCE_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: ISTIO_META_POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: ISTIO_META_INTERCEPTION_MODE
-          value: REDIRECT
-        image: liamwhite/proxy:oscon
-        imagePullPolicy: Always
-        name: istio-proxy
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-        securityContext:
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsUser: 1337
-        volumeMounts:
-        - mountPath: /etc/istio/proxy
-          name: istio-envoy
-        - mountPath: /etc/certs/
-          name: istio-certs
-          readOnly: true
-      initContainers:
-      - args:
-        - -p
-        - "15001"
-        - -u
-        - "1337"
-        - -m
-        - REDIRECT
-        - -i
-        - '*'
-        - -x
-        - ""
-        - -b
-        - 9080,
-        - -d
-        - ""
-        image: liamwhite/proxy_init:oscon
-        imagePullPolicy: Always
-        name: istio-init
-        resources: {}
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-          privileged: true
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: istio-envoy
-      - name: istio-certs
-        secret:
-          optional: true
-          secretName: istio.default
-status: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: reviews-v2
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/status: '{"version":"47f2e1a836d303da58ef4709268026d9a03df08a34294c5fdfdff030c5d34984","initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}'
-      creationTimestamp: null
       labels:
         app: reviews
         role: backend
         version: v2
     spec:
       containers:
-      - image: istio/examples-bookinfo-reviews-v2:1.5.0
+      - name: reviews
+        image: istio/examples-bookinfo-reviews-v2:1.9.0
         imagePullPolicy: IfNotPresent
-        name: reviews
         ports:
         - containerPort: 9080
-        resources: {}
-      - args:
-        - proxy
-        - sidecar
-        - --configPath
-        - /etc/istio/proxy
-        - --binaryPath
-        - /usr/local/bin/envoy
-        - --serviceCluster
-        - reviews
-        - --drainDuration
-        - 45s
-        - --parentShutdownDuration
-        - 1m0s
-        - --discoveryAddress
-        - istio-pilot.istio-system:15007
-        - --discoveryRefreshDelay
-        - 10s
-        - --zipkinAddress
-        - zipkin.istio-system:9411
-        - --connectTimeout
-        - 10s
-        - --statsdUdpAddress
-        - istio-statsd-prom-bridge.istio-system:9125
-        - --proxyAdminPort
-        - "15000"
-        - --controlPlaneAuthPolicy
-        - NONE
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: INSTANCE_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: ISTIO_META_POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: ISTIO_META_INTERCEPTION_MODE
-          value: REDIRECT
-        image: liamwhite/proxy:oscon
-        imagePullPolicy: Always
-        name: istio-proxy
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-        securityContext:
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsUser: 1337
-        volumeMounts:
-        - mountPath: /etc/istio/proxy
-          name: istio-envoy
-        - mountPath: /etc/certs/
-          name: istio-certs
-          readOnly: true
-      initContainers:
-      - args:
-        - -p
-        - "15001"
-        - -u
-        - "1337"
-        - -m
-        - REDIRECT
-        - -i
-        - '*'
-        - -x
-        - ""
-        - -b
-        - 9080,
-        - -d
-        - ""
-        image: liamwhite/proxy_init:oscon
-        imagePullPolicy: Always
-        name: istio-init
-        resources: {}
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-          privileged: true
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: istio-envoy
-      - name: istio-certs
-        secret:
-          optional: true
-          secretName: istio.default
-status: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: reviews-v3
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/status: '{"version":"47f2e1a836d303da58ef4709268026d9a03df08a34294c5fdfdff030c5d34984","initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}'
-      creationTimestamp: null
       labels:
         app: reviews
         role: backend
         version: v3
     spec:
       containers:
-      - image: istio/examples-bookinfo-reviews-v3:1.5.0
+      - name: reviews
+        image: istio/examples-bookinfo-reviews-v3:1.9.0
         imagePullPolicy: IfNotPresent
-        name: reviews
         ports:
         - containerPort: 9080
-        resources: {}
-      - args:
-        - proxy
-        - sidecar
-        - --configPath
-        - /etc/istio/proxy
-        - --binaryPath
-        - /usr/local/bin/envoy
-        - --serviceCluster
-        - reviews
-        - --drainDuration
-        - 45s
-        - --parentShutdownDuration
-        - 1m0s
-        - --discoveryAddress
-        - istio-pilot.istio-system:15007
-        - --discoveryRefreshDelay
-        - 10s
-        - --zipkinAddress
-        - zipkin.istio-system:9411
-        - --connectTimeout
-        - 10s
-        - --statsdUdpAddress
-        - istio-statsd-prom-bridge.istio-system:9125
-        - --proxyAdminPort
-        - "15000"
-        - --controlPlaneAuthPolicy
-        - NONE
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: INSTANCE_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: ISTIO_META_POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: ISTIO_META_INTERCEPTION_MODE
-          value: REDIRECT
-        image: liamwhite/proxy:oscon
-        imagePullPolicy: Always
-        name: istio-proxy
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-        securityContext:
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsUser: 1337
-        volumeMounts:
-        - mountPath: /etc/istio/proxy
-          name: istio-envoy
-        - mountPath: /etc/certs/
-          name: istio-certs
-          readOnly: true
-      initContainers:
-      - args:
-        - -p
-        - "15001"
-        - -u
-        - "1337"
-        - -m
-        - REDIRECT
-        - -i
-        - '*'
-        - -x
-        - ""
-        - -b
-        - 9080,
-        - -d
-        - ""
-        image: liamwhite/proxy_init:oscon
-        imagePullPolicy: Always
-        name: istio-init
-        resources: {}
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-          privileged: true
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: istio-envoy
-      - name: istio-certs
-        secret:
-          optional: true
-          secretName: istio.default
-status: {}
 ---
 ##################################################################################################
-# Productpage service
+# Productpage services
 ##################################################################################################
 apiVersion: v1
 kind: Service
@@ -694,123 +179,20 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: productpage-v1
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/status: '{"version":"47f2e1a836d303da58ef4709268026d9a03df08a34294c5fdfdff030c5d34984","initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}'
-      creationTimestamp: null
       labels:
         app: productpage
         role: frontend
         version: v1
     spec:
       containers:
-      - image: istio/examples-bookinfo-productpage-v1:1.5.0
+      - name: productpage
+        image: istio/examples-bookinfo-productpage-v1:1.9.0
         imagePullPolicy: IfNotPresent
-        name: productpage
         ports:
         - containerPort: 9080
-        resources: {}
-      - args:
-        - proxy
-        - sidecar
-        - --configPath
-        - /etc/istio/proxy
-        - --binaryPath
-        - /usr/local/bin/envoy
-        - --serviceCluster
-        - productpage
-        - --drainDuration
-        - 45s
-        - --parentShutdownDuration
-        - 1m0s
-        - --discoveryAddress
-        - istio-pilot.istio-system:15007
-        - --discoveryRefreshDelay
-        - 10s
-        - --zipkinAddress
-        - zipkin.istio-system:9411
-        - --connectTimeout
-        - 10s
-        - --statsdUdpAddress
-        - istio-statsd-prom-bridge.istio-system:9125
-        - --proxyAdminPort
-        - "15000"
-        - --controlPlaneAuthPolicy
-        - NONE
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: INSTANCE_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: ISTIO_META_POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: ISTIO_META_INTERCEPTION_MODE
-          value: REDIRECT
-        image: liamwhite/proxy:oscon
-        imagePullPolicy: Always
-        name: istio-proxy
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-        securityContext:
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsUser: 1337
-        volumeMounts:
-        - mountPath: /etc/istio/proxy
-          name: istio-envoy
-        - mountPath: /etc/certs/
-          name: istio-certs
-          readOnly: true
-      initContainers:
-      - args:
-        - -p
-        - "15001"
-        - -u
-        - "1337"
-        - -m
-        - REDIRECT
-        - -i
-        - '*'
-        - -x
-        - ""
-        - -b
-        - 9080,
-        - -d
-        - ""
-        image: liamwhite/proxy_init:oscon
-        imagePullPolicy: Always
-        name: istio-init
-        resources: {}
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-          privileged: true
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: istio-envoy
-      - name: istio-certs
-        secret:
-          optional: true
-          secretName: istio.default
-status: {}
 ---

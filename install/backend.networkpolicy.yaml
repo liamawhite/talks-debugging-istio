@@ -12,22 +12,17 @@ spec:
   - Egress
   ingress:
   - from:
-    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          role: frontend
     - podSelector:
         matchLabels:
           role: backend
-          role: frontend
   egress:
   - to:
-    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          role: frontend
     - podSelector:
         matchLabels:
           role: backend
-          role: frontend
-  - to:
-    - namespaceSelector: {}
-    - podSelector:
-        matchLabels:
-          istio: pilot
-          istio: mixer
-
